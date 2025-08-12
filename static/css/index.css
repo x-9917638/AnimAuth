@@ -1,0 +1,127 @@
+#site-description {
+    background: linear-gradient(90deg, #e3f0fd 0%, #f6f8fa 100%);
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.06);
+    padding: 32px 36px 28px 36px;
+    margin: 0 auto 38px auto;
+    /*max-width: 700px;*/
+    text-align: center;
+    font-size: 1.25rem;
+    color: #174ea6;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+#site-description h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1976d2;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+}
+#site-description p {
+    margin: 0 0 10px 0;
+    line-height: 1.7;
+}
+#site-description .site-note {
+    color: #0d47a1;
+    font-size: 1.08rem;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+#previews {
+    margin: 0 auto 32px auto;
+    max-width: 100vw;
+    overflow-x: auto;
+    padding-bottom: 12px;
+}
+
+.preview-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 32px;
+    padding: 12px 0 12px 0;
+    scroll-snap-type: x mandatory;
+}
+
+.item {
+    position: relative;
+    min-width: 340px;
+    max-width: 420px;
+    flex: 0 0 auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.08);
+    overflow: hidden;
+    transition: box-shadow 10ms, transform 50ms;
+    scroll-snap-align: start;
+}
+.item:hover {
+    box-shadow: 0 6px 24px rgba(25,118,210,0.16);
+    transform: translateY(-6px) scale(1.03);
+}
+
+.gallery-image {
+    object-fit: cover;
+    width: 100%;
+    height: 220px;
+    display: block;
+    border-bottom: 1px solid #e0e0e0;
+    background: #f6f8fa;
+    transition: filter 0.2s;
+}
+.item:hover .gallery-image {
+    filter: brightness(0.95) blur(1px);
+}
+
+.image-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1976d2;
+    margin: 12px 0 0 0;
+    text-align: left;
+    padding-left: 18px;
+}
+.image-author {
+    font-size: 1.05rem;
+    color: #555;
+    margin: 2px 0 0 0;
+    text-align: left;
+    padding-left: 18px;
+}
+.image-description {
+    font-size: 1rem;
+    color: #333;
+    margin: 8px 0 16px 0;
+    text-align: left;
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+.preview-grid::-webkit-scrollbar {
+    height: 12px;
+    background: #e3f0fd;
+    border-radius: 8px;
+}
+.preview-grid::-webkit-scrollbar-thumb {
+    background: #b3c6e6;
+    border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+    #site-description {
+        padding: 18px 8vw 16px 8vw;
+        font-size: 1.05rem;
+    }
+    #site-description h1 {
+        font-size: 2rem;
+    }
+    .item {
+        min-width: 80vw;
+        max-width: 90vw;
+    }
+    .gallery-image {
+        height: 36vw;
+        min-height: 120px;
+    }
+}

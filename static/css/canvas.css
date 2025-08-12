@@ -1,0 +1,234 @@
+body {
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    background: #f6f8fa;
+    margin: 0;
+    padding: 0;
+}
+
+canvas {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    display: block;
+    width: 500px;
+    height: 500px;
+    image-rendering: pixelated;
+    margin-bottom: 12px;
+    transition: box-shadow 0.2s;
+}
+canvas:focus, canvas:hover {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    outline: none;
+}
+
+/*div {*/
+/*    text-align: center;*/
+/*    margin: 10px;*/
+/*}*/
+
+button, input {
+    margin: 5px;
+}
+
+#top {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 50px;
+    margin: 40px auto 20px auto;
+    max-width: 900px;
+}
+
+#canvas-toolbar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 18px;
+    margin-right: 32px;
+    min-width: 170px;
+}
+
+#canvas-toolbar label,
+#canvas-toolbar input[type="color"],
+#canvas-toolbar button {
+    margin-bottom: 8px;
+}
+
+#canvas-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 18px;
+    font-size: 1em;
+}
+
+#color-picker {
+    margin-left: 8px;
+    margin-right: 8px;
+    vertical-align: middle;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 1.5px 4px rgba(0,0,0,0.06);
+    cursor: pointer;
+}
+
+#clear-canvas {
+    background: #e0e0e0;
+    color: #333;
+}
+
+#clear-canvas:hover {
+    background: #1976d2;
+    color: #fff;
+}
+
+.card-container {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+    padding: 32px 32px 24px 32px;
+    margin: 0 auto 32px auto;
+    max-width: 420px;
+    width: 100%;
+}
+
+#gif-preview {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fafbfc;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    padding: 18px 18px 10px 18px;
+    min-width: 270px;
+    min-height: 270px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.img-container img {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 10px;
+    background: #fff;
+}
+
+button, input[type="submit"], input[type="button"] {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 10px;
+    font-size: 1em;
+    font-weight: 800;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s;
+    box-shadow: 0 1.5px 4px rgba(25,118,210,0.08);
+}
+button:hover, input[type="submit"]:hover, input[type="button"]:hover {
+    background: #1565c0;
+}
+
+input[type="color"] {
+    border: none;
+    border-radius: 4px;
+    width: 36px;
+    height: 36px;
+    margin-left: 8px;
+    background: #fff;
+    box-shadow: 0 1.5px 4px rgba(0,0,0,0.06);
+    cursor: pointer;
+}
+
+input[type="range"] {
+    width: 120px;
+    margin: 0 8px;
+}
+
+form#signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+    padding: 32px 32px 24px 32px;
+    margin: 32px auto 0 auto;
+    max-width: 420px;
+    width: 100%;
+    gap: 12px;
+}
+
+form#signup-form label {
+    font-weight: 800;
+    font-size: 1.3em;
+    margin: 0 0 0 0;
+}
+
+form#signup-form input[type="text"] {
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 5px 5px;
+    margin-bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border 0.18s;
+    font-size: 1em;
+}
+form#signup-form input[type="text"]:focus {
+    border: 1.5px solid #1976d2;
+    outline: none;
+}
+
+#instructions {
+    color: #555;
+    font-size: 1.05em;
+    margin: 0 0 0 0;
+}
+
+#motivation {
+    font-size: 1.2rem;
+    margin: 0 0 0 0;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1976d2;
+    margin-top: 32px;
+    margin-bottom: 18px;
+    letter-spacing: -1px;
+}
+
+@media (max-width: 900px) {
+    #top {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+    #canvas-toolbar {
+        flex-direction: row;
+        margin-right: 0;
+        margin-bottom: 24px;
+        min-width: unset;
+        gap: 12px;
+    }
+    canvas, #gif-preview {
+        width: 90vw;
+        height: 90vw;
+        min-width: 220px;
+        min-height: 220px;
+        max-width: 95vw;
+        max-height: 95vw;
+    }
+}

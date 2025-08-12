@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block morestylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block content%}
+    <section id="site-description">
+        <h1>Pixel Gallery</h1>
+        <p>An image hosting site with a unique twist on authentication. Your password is your art: to sign up or log in, you must draw your own animated GIF.</p>
+        <p>All uploads are <strong>publicly viewable</strong> and <strong>attributable</strong> to their uploader. Don't even think about uploading bad stuffs.</p>
+        <p class="site-note">Maximum upload size: <strong>32MB</strong> per image. Please keep it creative and respectful!</p>
+    </section>
+
+    <div id="previews">
+        <h1>Image Previews</h1>
+        {% if images %}
+            <div class="preview-grid">
+                {% for image in images %}
+                    <div class="item">
+                        <a href="{{ url_for('images', filename=image.filename) }}">
+                            <h2 class="image-title">{{ image.title }}</h2>
+                            <a href="{{ url_for('user_profile', id=image.author_id) }}">
+                                <h3 class="image-author">Uploaded by: {{ image.author }}</h3>
+                            </a>
+                            <a href="{{ url_for('images', filename=image.filename) }}">
+                                <p class="image-description">{{ image.description[:70] + '..' if image.description|length > 68 else image.description }}</p>
+                                <img src="{{ url_for('static', filename="media/uploads/" + image.filename) }}" alt="{{ image.title }}" class="gallery-image"/>
+                            </a>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No images available.</p>
+        {% endif %}
+    </div>
+{% endblock %}

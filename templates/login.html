@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block morestylesheets %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/canvas.css') }}">
+{% endblock %}
+
+{% block content %}
+    <h1>Sign In</h1>
+    <div id="top">
+        <div id="canvas-toolbar">
+            <button id="clear-canvas">Clear Canvas</button>
+            <label for="color-picker">Color:</label>
+            <input type="color" id="color-picker" value="#000000">
+            <button type="button" id="save-frame">Save Current Frame</button>
+        </div>
+        <canvas id="drawingCanvas" width="100" height="100"></canvas>
+        <div id="gif-preview">
+            <label for="anim-delay">Animation Delay:</label>
+            <input type="range" id="anim-delay" min="10" max="100" value="100" step="10">
+            <button type="button" id="clear-saved-frames">Clear saved frames</button>
+        </div>
+    </div>
+
+
+
+    <form id="signup-form">
+        <label for="username">Username</label>
+        <input type="text" maxlength="100" class="form-box" name="username" id="username">
+        <label for="placeholder">Password</label>
+        <input type="text" class="form-box" id="placeholder" disabled placeholder="Use the canvas above to input your GIF password.">
+        <input id="submit" type="submit" value="Sign In!">
+    </form>
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}
+

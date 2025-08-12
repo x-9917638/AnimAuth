@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Gallery{% endblock %}
+
+{% block morestylesheets %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="gallery-container">
+    <div class="gallery-header">
+        <h1>Gallery</h1>
+        <div class="gallery-filters">
+            <form id="filter-form" method="GET" action="{{ url_for('gallery') }}">
+                <label for="author">Author:</label>
+                <input type="text" id="author" name="author" placeholder="Author nam(e">
+
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date" name="start_date">
+
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date" name="end_date">
+
+                <label for="sort">Sort By:</label>
+                <select id="sort" name="sort">
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
+                    <option value="date">Date Created</option>
+                </select>
+
+                <label for="sort-order">Order:</label>
+                <select id="sort-order" name="sort_order">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+
+                <button type="submit">Apply</button>
+            </form>
+        </div>
+    </div>
+    <div class="gallery-grid">
+        {% for image in images %}
+        <div class="gallery-item">
+            <a href="{{ url_for('images', filename=image.filename) }}">
+                <img src="{{ url_for('static', filename='media/uploads/' + image.filename) }}" alt="{{ image.title }}">
+            </a>
+            <div class="gallery-item-info">
+                <a href="{{ url_for('images', filename=image.filename) }}">
+                    <h3>{{ image.title }}</h3>
+                </a>
+                <a href="{{ url_for('user_profile', id=image.author_id) }}">
+                    <p class="image-author">Uploaded by: {{ image.author }}</p>
+                </a>
+                <p>{{ image.created.strftime('%d %b %Y, %I:%M %p') }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="pagination">
+        {% if page > 1 %}
+        <a href="{{ url_for('gallery', page=page-1) }}" class="prev">&laquo; Previous</a>
+        {% endif %}
+
+        <span>Page {{ page }}</span>
+
+        {% if images|length == 50 %}
+        <a href="{{ url_for('gallery', page=page+1) }}" class="next">Next &raquo;</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

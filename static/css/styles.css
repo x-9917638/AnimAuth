@@ -1,0 +1,88 @@
+body {
+    font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+    background: #f6f8fa;
+    margin: 0;
+    min-height: 100vh;
+    font-size: x-large;
+}
+
+#header {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    margin-bottom: 10px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+}
+
+nav a {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 2rem;
+    padding: 8px 18px;
+    border-radius: 6px;
+    transition: background 0.18s, color 0.18s;
+}
+nav a:hover, nav a:focus {
+    background: #e3f0fd;
+    color: #0d47a1;
+}
+
+#alerts {
+    max-width: 520px;
+    margin: 0 auto 0 auto;
+    padding: 0 0;
+}
+#alerts p {
+    background: #e3f0fd;
+    color: #1976d2;
+    /* These colours should be overidden in the html, dependent on the status of the flash (If i remmember). */
+    border-left: 4px solid #1976d2;
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin: 0 0 12px 0;
+    font-size: 1em;
+    box-shadow: 0 1.5px 4px rgba(25,118,210,0.06);
+}
+
+#content {
+    /* max-width: 900px; */
+    margin: 0 auto 32px auto;
+    padding: 0 16px;
+}
+
+@media (max-width: 700px) {
+    nav {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px 0;
+    }
+    #content {
+        padding: 0 4vw;
+    }
+}
+
+#upload-preview {
+  text-align: center;
+}
+
+#upload-preview img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+#upload-image-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+

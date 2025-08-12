@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ image.title }} - {{ image.author }}{% endblock %}
+
+{% block morestylesheets %}
+	<link rel="stylesheet" href="{{ url_for("static", filename="css/image.css") }}">
+{% endblock %}
+
+{% block content %}
+    <h1 style="text-align: center">{{ image.title }}</h1>
+    <div id="image-stats">
+        <a id="author" href="{{ url_for("user_profile", id=image.author_id) }}">
+            <p>Author: {{ image.author }}</p>
+        </a>
+        <p>Upload Date: {{ image.created.strftime("%d/%m/%Y, %I:%M %p") }}</p>
+    </div>
+    <a href="{{ url_for('download', filename=image.filename) }}">
+        <img id="main-image" src="{{ url_for('static', filename='media/uploads/' + image.filename) }}">
+    </a>
+    <div id="description">
+        <h2>Description</h2>
+        <p>{{ image.description }}</p>
+    </div>
+
+    <div id="metadata">
+        <h2>Image Metadata</h2>
+        <div id="metadata-category-container">
+            <div id="data-exif">
+                <h3>Tags with Data</h3>
+                <button id="expand-data">Expand</button>
+                <div class="expandable-list hidden" id="data-list">
+                {% for tag, value in metadata.items() %}
+                    {% if value != None %}
+                    <div class="tag-container">{{ tag|title }}: {{ value }}</div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+            <div id="no-data-exif">
+                <h3>Tags with No Data</h3>
+                <button id="expand-no-data">Expand</button>
+                <div class="expandable-list hidden" id="no-data-list">
+                {% for tag, value in metadata.items() %}
+                    {% if value == None %}
+                    <li class="tag-no-value-container">{{ tag }}</li>
+                    {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const expandData = document.getElementById('expand-data');
+        const withData = document.getElementById('data-list');
+        const expandNoData = document.getElementById('expand-no-data');
+        const noData = document.getElementById('no-data-list');
+
+        expandData.addEventListener('click', () => {
+            if (withData.classList.contains('expanded')) {
+                withData.classList.remove('expanded');
+                expandData.textContent = 'Show More';
+            } else {
+                withData.classList.add('expanded');
+                expandData.textContent = 'Show Less';
+            }
+        });
+
+        expandNoData.addEventListener('click', () => {
+            if (noData.classList.contains('expanded')) {
+                noData.classList.remove('expanded');
+                expandNoData.textContent = 'Show More';
+            } else {
+                noData.classList.add('expanded');
+                expandNoData.textContent = 'Show Less';
+            }
+        });
+    </script>
+{% endblock %}

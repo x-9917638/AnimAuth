@@ -1,0 +1,99 @@
+#main-image {
+    object-fit: cover;
+    max-width: 100%;
+    display: block;
+    border: 1px solid #e0e0e0;
+}
+
+#image-stats {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#description {
+    background: linear-gradient(90deg, #e3f0fd 0%, #f6f8fa 100%);
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.06);
+    padding: 32px 36px 28px 36px;
+    margin: 0 auto 38px auto;
+    max-width: 700px;
+    text-align: center;
+    font-size: 1.25rem;
+    color: #174ea6;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+}
+h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1976d2;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+}
+#description p {
+    margin: 0 0 10px 0;
+    line-height: 1.7;
+}
+
+#metadata {
+    background: linear-gradient(90deg, #e3f0fd 0%, #f6f8fa 100%);
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.06);
+    padding: 32px 36px 28px 36px;
+    margin: 0 auto 38px auto;
+    text-align: center;
+    font-size: 1.25rem;
+    font-family: 'Inter', 'Segoe UI', 'Roboto', Arial, sans-serif;
+    max-width: 1000px;
+}
+
+#metadata-category-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.expandable-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+#data-exif, #no-data-exif {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 18px 14px 18px;
+    background: linear-gradient(90deg, #e3f0fd 0%, #f6f8fa 100%);
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.06);
+    max-width: 500px;
+}
+
+#data-list, #no-data-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: hidden;
+    gap: 10px;
+
+}
+
+.tag-container, .tag-no-value-container {
+    text-align: center;
+    margin-top: 12px;
+    gap: 10px;
+    padding: 8px 8px 8px 8px;
+    background: #92b7ec;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.06);
+}
+
+.expandable-list.hidden {
+    display: none;
+}
+
+.expandable-list.expanded {
+    max-height: none; /* Allow the list to expand fully */
+    display: flex !important;
+    flex-direction: column;
+    height: auto; /* Ensure it fits all tags */
+}

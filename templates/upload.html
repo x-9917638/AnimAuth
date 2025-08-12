@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 >Upload an Image</h1>
+    <div id="upload-preview"></div>
+    <form id="upload-image-form" enctype="multipart/form-data" method="POST" action="{{ url_for('upload') }}">
+        <input type="file" accept="image/*" name="image" id="image-input" required>
+        <input type="text" class="form-box" maxlength="100" id="title" name="title" placeholder="Title (Required)" {% if title %}value={{ title }}{% endif %} required>
+        <input type="text" class="form-box" maxlength="5000" id="description" name="description" placeholder="Description (Optional)" {% if description %}value={{ description }}{% endif %}>
+        <input type="submit" value="Upload!">
+    </form>
+
+    <script>
+    document.getElementById('image-input').addEventListener('change', function(event) {
+        const preview = document.getElementById('upload-preview');
+        preview.innerHTML = '';
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.style.maxWidth = '640px';
+            img.style.maxHeight = '480px';
+            img.src = URL.createObjectURL(file);
+            preview.appendChild(img);
+        }
+    });
+    </script>
+{% endblock %}
