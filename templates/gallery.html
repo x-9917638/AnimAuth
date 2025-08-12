@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Gallery{% endblock %}
+{% block title %}- Gallery{% endblock %}
 
 {% block morestylesheets %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
@@ -63,8 +63,8 @@
 
         <span>Page {{ page }}</span>
 
-        {% if images|length == 50 %}
-        <a href="{{ url_for('gallery', page=page+1) }}" class="next">Next &raquo;</a>
+        {% if images|length == 12 %}
+        <a href="{{ url_for('gallery', page=page + 1) }}" class="next">Next &raquo;</a>
         {% endif %}
     </div>
 </div>

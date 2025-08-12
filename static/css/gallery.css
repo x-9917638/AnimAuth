@@ -33,3 +33,34 @@
 a:hover {
     text-decoration: none;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    gap: 10px;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #1976d2;
+    font-weight: bold;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+    background-color: #1976d2;
+    color: #fff;
+}
+
+.pagination span {
+    font-weight: bold;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}

@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
+{% block title %}- Home{% endblock %}
 
+{% block morescripts %}
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}
 {% block morestylesheets %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
 {% block content%}
     <section id="site-description">
-        <h1>Pixel Gallery</h1>
+        <h1>AnimAuth</h1>
         <p>An image hosting site with a unique twist on authentication. Your password is your art: to sign up or log in, you must draw your own animated GIF.</p>
         <p>All uploads are <strong>publicly viewable</strong> and <strong>attributable</strong> to their uploader. Don't even think about uploading bad stuffs.</p>
         <p class="site-note">Maximum upload size: <strong>32MB</strong> per image. Please keep it creative and respectful!</p>

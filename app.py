@@ -121,6 +121,8 @@ def index():
 
 @app.route("/gallery")
 def gallery():
+    page = request.args.get('page', 1, type=int)
+
     sort = request.args.get("sort")
     if not sort or sort == "date": sort = "id"
 
@@ -137,17 +139,20 @@ def gallery():
 
     match order:
         case "desc":
-            images = UserUploadedImage.query.filter(
+            query = UserUploadedImage.query.filter(
                 UserUploadedImage.created >= start_date,
                 UserUploadedImage.created <= end_date,
-            ).order_by(func.lower(getattr(UserUploadedImage, sort, None))).limit(50)
+            ).order_by(func.lower(getattr(UserUploadedImage, sort, None)))
         case _:
-            images = UserUploadedImage.query.filter(
+            query = UserUploadedImage.query.filter(
                 UserUploadedImage.created >= start_date,
                 UserUploadedImage.created <= end_date,
-            ).order_by(func.lower(getattr(UserUploadedImage, sort, None))).limit(50)
+            ).order_by(func.lower(getattr(UserUploadedImage, sort, None)))
+
+    total = query.count()
+    images = query.offset((page - 1) * 12).limit(12).all()
     print(images)
-    return render_template("gallery.html", images=images)
+    return render_template("gallery.html", images=images, page=page)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
