@@ -5,7 +5,7 @@ import sqlalchemy
 from flask import Flask, render_template, request, redirect, flash, url_for, abort, session, \
     send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func
+from sqlalchemy import func, desc
 from flask_uuid import FlaskUUID
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -17,7 +17,7 @@ import time, os, base64, filetype, uuid
 
 
 
-def create_app(debug_config=None):
+def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config["SECRET_KEY"] = 'dev'
     app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///default.db'
@@ -25,13 +25,6 @@ def create_app(debug_config=None):
     app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024 # 32 mb (Images can't be that big, rightttt)
     app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
     app.config['USE_PERMANENT_SESSION'] = True
-    app.config["SQLALCHEMY_ECHO"] = True
-
-
-    if not debug_config:
-        app.config.from_pyfile('config.py', silent=True)
-    else:
-        app.config.from_mapping(debug_config)
 
     return app
 
@@ -70,9 +63,9 @@ def check_extensions(extension: str):
     return extension not in ("jpg", "png", "jpeg", "gif", "tif", "svg")
 
 
-def get_recent_images(app: Flask):
+def get_recent_images(app: Flask, num: int):
     """Returns a list of the file ids of the last 10 images upload"""  # Will use on landing page probably
-    return UserUploadedImage.query.order_by(UserUploadedImage.created.desc()).limit(10)
+    return UserUploadedImage.query.order_by(UserUploadedImage.created.desc()).limit(num)
 
 
 def handle_json_submission() -> None | tuple[str, str]:
@@ -117,42 +110,62 @@ def validate_image(stream):
 
 @app.route('/')
 def index():
-    return render_template("index.html", images=get_recent_images(app))
+    return render_template("index.html", images=get_recent_images(app, 5))
 
 @app.route("/gallery")
 def gallery():
     page = request.args.get('page', 1, type=int)
 
     sort = request.args.get("sort")
-    if not sort or sort == "date": sort = "id"
+    if not sort: sort = "id"
 
     order = request.args.get("sort-order")
 
-    end_date = request.args.get("end-date")
-    if not end_date: end_date = "9999-12-31"
-    end_date = datetime.strptime(end_date, "%Y-%m-%d")
+    str_end_date = request.args.get("end-date")
+    if not str_end_date: str_end_date = "9999-12-31"
+    end_date = datetime.strptime(str_end_date, "%Y-%m-%d")
 
 
-    start_date = request.args.get("start-date")
-    if not start_date: start_date = "0001-01-01"
-    start_date = datetime.strptime(start_date, "%Y-%m-%d")
+    str_start_date = request.args.get("start-date")
+    if not str_start_date: str_start_date = "0001-01-01"
+    start_date = datetime.strptime(str_start_date, "%Y-%m-%d")
+
+    author = request.args.get("author")
+
+    title = request.args.get("title")
+
+    query = UserUploadedImage.query.filter(
+        UserUploadedImage.created >= start_date,
+        UserUploadedImage.created <= end_date,
+    )
 
     match order:
         case "desc":
-            query = UserUploadedImage.query.filter(
-                UserUploadedImage.created >= start_date,
-                UserUploadedImage.created <= end_date,
-            ).order_by(func.lower(getattr(UserUploadedImage, sort, None)))
+            query = query.order_by(desc(func.lower(getattr(UserUploadedImage, sort, None))))
         case _:
-            query = UserUploadedImage.query.filter(
-                UserUploadedImage.created >= start_date,
-                UserUploadedImage.created <= end_date,
-            ).order_by(func.lower(getattr(UserUploadedImage, sort, None)))
+            query = query.order_by(func.lower(getattr(UserUploadedImage, sort, None)))
 
-    total = query.count()
+    if author:
+        query = query.filter(
+            UserUploadedImage.author.like(f"%{author.lower()}%")
+        )
+
+    if title:
+        query = query.filter(
+            UserUploadedImage.title.like(f"%{title.lower()}%")
+        )
+
     images = query.offset((page - 1) * 12).limit(12).all()
-    print(images)
-    return render_template("gallery.html", images=images, page=page)
+    return render_template("gallery.html",
+                           images=images,
+                           page=page,
+                           author=author,
+                           title=title,
+                           sort=sort,
+                           order=order,
+                           start_date=str_start_date,
+                           end_date=str_end_date
+                           )
 
 @app.route('/login', methods=["GET", "POST"])
 def login():

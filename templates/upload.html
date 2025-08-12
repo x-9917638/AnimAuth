@@ -3,7 +3,7 @@
 {% block content %}
     <h1 >Upload an Image</h1>
     <div id="upload-preview"></div>
-    <form id="upload-image-form" enctype="multipart/form-data" method="POST" action="{{ url_for('upload') }}">
+    <form autocomplete="off" id="upload-image-form" enctype="multipart/form-data" method="POST" action="{{ url_for('upload') }}">
         <input type="file" accept="image/*" name="image" id="image-input" required>
         <input type="text" class="form-box" maxlength="100" id="title" name="title" placeholder="Title (Required)" {% if title %}value={{ title }}{% endif %} required>
         <input type="text" class="form-box" maxlength="5000" id="description" name="description" placeholder="Description (Optional)" {% if description %}value={{ description }}{% endif %}>

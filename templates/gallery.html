@@ -11,27 +11,31 @@
     <div class="gallery-header">
         <h1>Gallery</h1>
         <div class="gallery-filters">
-            <form id="filter-form" method="GET" action="{{ url_for('gallery') }}">
-                <label for="author">Author:</label>
-                <input type="text" id="author" name="author" placeholder="Author nam(e">
+            <form autocomplete="off" id="filter-form" method="GET" action="{{ url_for('gallery') }}">
+
+                <label for="author">Uploader: </label>
+                <input type="text" id="author" name="author" {% if author %}value="{{ author }}"{% endif %} placeholder="Uploader username">
+
+                <label for="title">Title: </label>
+                <input type="text" id="title" name="title" {% if title %}value="{{ title }}"{% endif %} placeholder="Title">
 
                 <label for="start-date">Start Date:</label>
-                <input type="date" id="start-date" name="start_date">
+                <input type="date" id="start-date" name="start-date" value="{{ start_date }}">
 
                 <label for="end-date">End Date:</label>
-                <input type="date" id="end-date" name="end_date">
+                <input type="date" id="end-date" name="end-date" value="{{ end_date }}">
 
                 <label for="sort">Sort By:</label>
                 <select id="sort" name="sort">
                     <option value="title">Title</option>
-                    <option value="author">Author</option>
-                    <option value="date">Date Created</option>
+                    <option value="author" {% if sort == "author" %}selected{% endif %}>Author</option>
+                    <option value="id" {% if sort == "id" %}selected{% endif %}>Date Created</option>
                 </select>
 
                 <label for="sort-order">Order:</label>
-                <select id="sort-order" name="sort_order">
+                <select id="sort-order" name="sort-order">
                     <option value="asc">Ascending</option>
-                    <option value="desc">Descending</option>
+                    <option value="desc" {% if order == "desc" %}selected{% endif %}>Descending</option>
                 </select>
 
                 <button type="submit">Apply</button>
