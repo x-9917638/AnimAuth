@@ -36,20 +36,28 @@ nav a:hover, nav a:focus {
 }
 
 #alerts {
-    max-width: 520px;
-    margin: 0 auto 0 auto;
-    padding: 0 0;
+    max-width: 100%; !important;
+    margin: 0 auto 0 auto; !important;
+    padding: 0 16px; !important;
 }
-#alerts p {
-    background: #e3f0fd;
-    color: #1976d2;
-    /* These colours should be overidden in the html, dependent on the status of the flash (If i remmember). */
-    border-left: 4px solid #1976d2;
-    border-radius: 6px;
-    padding: 6px 8px;
-    margin: 0 0 12px 0;
-    font-size: 1em;
-    box-shadow: 0 1.5px 4px rgba(25,118,210,0.06);
+.alert-success {
+    background: #e3f0fd; !important
+    color: #1976d2; !important
+    border-left: 4px solid #1976d2; !important
+    box-shadow: 0 1.5px 4px rgba(25,118,210,0.06); !important
+}
+
+.alert-error {
+    background: #fde3e3; !important
+    color: #d21919; !important
+    border-left: 4px solid #d21919; !important
+    box-shadow: 0 1.5px 4px rgba(210,25,25,0.2); !important
+}
+
+.alert {
+    border-radius: 6px; !important
+    padding: 3px; !important
+    font-size: 1em; !important
 }
 
 #content {

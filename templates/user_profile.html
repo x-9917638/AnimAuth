@@ -1,5 +1,29 @@
 {% extends 'base.html' %}
 
+{% block morestylesheets %}<link rel="stylesheet" href="{{ url_for('static', filename='css/user_profile.css') }}">{% endblock %}
+
+{% block title %}- {{ user.username|title }}'s Profile{% endblock %}
+
+
+
 {% block content %}
-<h1>Welcome {{ user.username }}!</h1>
+    <h1>Welcome to {{ user.username|title }}'s profile!</h1>
+    <div id="activity">
+        <h3>Recent Uploads</h3>
+        {% if images %}
+            <div class="preview-grid">
+                {% for image in images %}
+                    <div class="item">
+                        <a href="{{ url_for('images', filename=image.filename) }}">
+                            <h2 class="image-title">{{ image.title }}</h2>
+                            <p class="image-description">{{ image.description[:70] + '..' if image.description|length > 68 else image.description }}</p>
+                            <img src="{{ url_for('static', filename="media/uploads/" + image.filename) }}" alt="{{ image.title }}" class="gallery-image"/>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No images available.</p>
+        {% endif %}
+    </div>
 {% endblock %}

@@ -33,7 +33,6 @@ app = create_app()
 FlaskUUID(app)
 
 
-
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -48,7 +47,7 @@ class UserUploadedImage(db.Model):
     format = db.Column(db.String(5), nullable=False)
     author = db.Column(db.String(80), nullable=False)
     author_id = db.Column(db.Uuid, db.ForeignKey('user.id'), nullable=False)
-    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.now())
     # public = db.Column(db.Boolean, nullable=False, default=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(5000)) # This one is optional
@@ -74,26 +73,26 @@ def handle_json_submission() -> None | tuple[str, str]:
         return abort(415)
 
     if not json_data.get("username"):
-        flash("Username is required")
+        flash("Username is required", "error")
         return "", ""
     username: str = json_data.get("username")
 
     if not len(username) < 80 and not len(username) >= 3:
-        flash("Username must be between 3 and 80 characters.")
+        flash("Username must be between 3 and 80 characters.", "error")
         return "", ""
 
     if any([(
             not a.isalpha() and a not in ["_", "."] and not a.isnumeric()
     ) for a in username]):
-        flash("Username may only contain letters, numbers and '.', '_'.")
+        flash("Username may only contain letters, numbers and '.', '_'.", "error")
         return "", ""
 
     if not json_data.get("frames"):
-        flash("Please submit an animation.")
+        flash("Please submit an animation.", "error")
         return username, ""
 
     if len(json_data["frames"]) < 3 or len(json_data["frames"]) > 10:
-        flash("Your animation must have 3-10 frames.")
+        flash("Your animation must have 3-10 frames.", "error")
         return username, ""
 
 
@@ -156,20 +155,22 @@ def gallery():
         )
 
     images = query.offset((page - 1) * 12).limit(12).all()
-    return render_template("gallery.html",
-                           images=images,
-                           page=page,
-                           author=author,
-                           title=title,
-                           sort=sort,
-                           order=order,
-                           start_date=str_start_date,
-                           end_date=str_end_date
-                           )
+    return render_template(
+        "gallery.html",
+        images=images,
+        page=page,
+        author=author,
+        title=title,
+        sort=sort,
+        order=order,
+        start_date=str_start_date,
+        end_date=str_end_date
+    )
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if session.get("user_id"):
+        flash("You are already signed in.", "error")
         return redirect(url_for("index"))
     if request.method == "POST":
         username, password = handle_json_submission()
@@ -182,7 +183,7 @@ def login():
             flash("Incorrect password!", "error")
             return redirect(url_for("login"))
         session["user_id"] = user.id
-        flash("Login success!")
+        flash("Login success!", "success")
         return redirect(url_for("user_profile", id=user.id))
 
     else:
@@ -191,6 +192,7 @@ def login():
 @app.route('/signup/', methods=["GET", "POST"])
 def signup():
     if session.get("user_id"):
+        flash("You are already signed in.", "error")
         return redirect(url_for("index"))
 
     if request.method == "POST":
@@ -212,18 +214,27 @@ def signup():
 
 @app.route('/logout', methods=["GET", "POST"])
 def logout():
+    if request.method == ["POST"]:
+        session.clear()
+        flash("Successfully logged out!", "success")
+        return redirect(url_for("index"))
+
     return "<h1>Visited logout page</h1>"
 
 
 @app.route('/user/<uuid(strict=False):id>')
 def user_profile(id):
     user = User.query.filter_by(id=id).one_or_none()
-    return render_template("user_profile.html", user=user)
+    if not user:
+        abort(404)
+
+    images = UserUploadedImage.query.filter_by(author_id=id).order_by(desc(UserUploadedImage.created)).limit(4)
+    return render_template("user_profile.html", user=user, images=images)
 
 @app.route('/upload', methods=["GET", 'POST'])
 def upload():
     if not session.get("user_id"):
-        flash("Please sign in to upload an image.")
+        flash("Please sign in to upload an image.", "error")
         return redirect(url_for("login"))
     user = User.query.filter_by(id=session.get("user_id")).one_or_none()
 
@@ -255,6 +266,7 @@ def upload():
         db.session.add(file_entry)
         try:
             db.session.commit()
+            flash("Upload success!", "success")
         except Exception as e:
             os.remove(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             abort(500, f"Exception {e}")

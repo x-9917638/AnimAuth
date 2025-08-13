@@ -19,7 +19,7 @@
     </a>
     <div id="description">
         <h2>Description</h2>
-        <p>{{ image.description }}</p>
+        <p>{% if image.description %}{{ image.description }}{% else %}Not provided :({% endif %}</p>
     </div>
 
     <div id="metadata">
@@ -27,7 +27,7 @@
         <div id="metadata-category-container">
             <div id="data-exif">
                 <h3>Tags with Data</h3>
-                <button id="expand-data">Expand</button>
+                <button id="expand-data">Show</button>
                 <div class="expandable-list hidden" id="data-list">
                 {% for tag, value in metadata.items() %}
                     {% if value != None %}
@@ -38,7 +38,7 @@
             </div>
             <div id="no-data-exif">
                 <h3>Tags with No Data</h3>
-                <button id="expand-no-data">Expand</button>
+                <button id="expand-no-data">Show</button>
                 <div class="expandable-list hidden" id="no-data-list">
                 {% for tag, value in metadata.items() %}
                     {% if value == None %}
@@ -58,20 +58,20 @@
         expandData.addEventListener('click', () => {
             if (withData.classList.contains('expanded')) {
                 withData.classList.remove('expanded');
-                expandData.textContent = 'Show More';
+                expandData.textContent = 'Show';
             } else {
                 withData.classList.add('expanded');
-                expandData.textContent = 'Show Less';
+                expandData.textContent = 'Hide';
             }
         });
 
         expandNoData.addEventListener('click', () => {
             if (noData.classList.contains('expanded')) {
                 noData.classList.remove('expanded');
-                expandNoData.textContent = 'Show More';
+                expandNoData.textContent = 'Show';
             } else {
                 noData.classList.add('expanded');
-                expandNoData.textContent = 'Show Less';
+                expandNoData.textContent = 'Hide';
             }
         });
     </script>
