@@ -14,12 +14,13 @@ from datetime import datetime, timedelta
 from PIL import Image
 from PIL.ExifTags import TAGS
 import time, os, base64, filetype, uuid
+from dotenv import load_dotenv
 
-
+load_dotenv()
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
-    app.config["SECRET_KEY"] = 'dev' # Replace with your own secret key!
+    app.config["SECRET_KEY"] = base64.b64decode(os.getenv('SECRET_KEY'))
     app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///default.db'
     app.config["UPLOAD_FOLDER"] = app.static_folder + "/media/uploads"
     app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024 # 32 mb (Images can't be that big, rightttt)

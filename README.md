@@ -68,7 +68,11 @@ $ ./.venv/scripts/activate.bat
 ```shell
 $ pip install -r requirements.txt
 ```
-#### 4. Run the development server
+#### 4. Create a secret key
+```shell
+$ python -c "from base64 import b64encode; from os import urandom; print(b64encode(urandom(512)).decode('utf-8'))" > ./.env
+```
+#### 5. Run the development server
 ```shell
 $ flask run 
 ```
