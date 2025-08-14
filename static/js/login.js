@@ -7,8 +7,7 @@ const saveFrame = document.getElementById("save-frame")
 const animationDelaySlider = document.getElementById("anim-delay")
 const clearSavedFrames = document.getElementById("clear-saved-frames")
 const form = document.getElementById("signup-form")
-const csrfElement = document.getElementById("csrf_token");
-
+const eraser = document.getElementById("eraser")
 
 canvas.width = 50;
 canvas.height = 50;
@@ -28,8 +27,11 @@ clearButton.addEventListener('click', clear)
 saveFrame.addEventListener('click', save)
 animationDelaySlider.addEventListener('input', restartAnimation);
 clearSavedFrames.addEventListener("click", clearFrames)
-
 form.addEventListener("submit", sendFrames)
+
+eraser.addEventListener("change", () => {
+    erasing = eraser.checked
+})
 
 function sendFrames(event) {
     event.preventDefault();
@@ -105,7 +107,13 @@ function draw(event) {
     const snappedX = Math.floor(x / 5) * 5;
     const snappedY = Math.floor(y / 5) * 5;
 
-    ctx.fillStyle = currentColor;
+    if (!erasing) {
+        ctx.fillStyle = currentColor;
+    }
+    else {
+        ctx.fillStyle = "#ffffff"
+    }
+
     ctx.fillRect(snappedX, snappedY, 5, 5); // Fill a 5x5 block
 }
 
@@ -166,3 +174,67 @@ function save() {
     clear();
     startAnimation();
 }
+
+function makeGrid() {
+    // Copilot saved my ahh with this functino :c
+    const canvas = document.getElementById('drawingCanvas');
+    const blockSize = 5;
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Remove any existing grid overlay
+    const oldGrid = document.getElementById('canvas-grid-overlay');
+    if (oldGrid && oldGrid.parentNode) {
+        oldGrid.parentNode.removeChild(oldGrid);
+    }
+
+    // Get the computed CSS width/height of the canvas
+    const computedStyle = window.getComputedStyle(canvas);
+    const cssWidth = computedStyle.width;
+    const cssHeight = computedStyle.height;
+
+    const grid = document.createElement('canvas');
+    grid.id = 'canvas-grid-overlay';
+    grid.width = width;
+    grid.height = height;
+    grid.style.position = 'absolute';
+    grid.style.left = canvas.offsetLeft + 'px';
+    grid.style.top = canvas.offsetTop + 'px';
+    grid.style.pointerEvents = 'none';
+    grid.style.zIndex = 10;
+    grid.style.width = cssWidth;
+    grid.style.height = cssHeight;
+    grid.style.background = 'transparent';
+
+    const gridCtx = grid.getContext('2d');
+    gridCtx.clearRect(0, 0, width, height);
+    gridCtx.strokeStyle = 'rgba(0,0,0,0.2)';
+    gridCtx.lineWidth = 1;
+    for (let x = 0; x <= width; x += blockSize) {
+        gridCtx.beginPath();
+        gridCtx.moveTo(x, 0);
+        gridCtx.lineTo(x, height);
+        gridCtx.stroke();
+    }
+    for (let y = 0; y <= height; y += blockSize) {
+        gridCtx.beginPath();
+        gridCtx.moveTo(0, y);
+        gridCtx.lineTo(width, y);
+        gridCtx.stroke();
+    }
+
+    // Ensure grid is appended after the canvas so it overlays
+    if (canvas.parentNode) {
+        if (canvas.nextSibling) {
+            canvas.parentNode.insertBefore(grid, canvas.nextSibling);
+        } else {
+            canvas.parentNode.appendChild(grid);
+        }
+    }
+}
+
+makeGrid()
+
+window.addEventListener("resize", () => {
+    makeGrid()
+});

@@ -5,7 +5,7 @@ import sqlalchemy
 from flask import Flask, render_template, request, redirect, flash, url_for, abort, session, \
     send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, update
 from flask_uuid import FlaskUUID
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -39,6 +39,7 @@ class User(db.Model):
     id = db.Column(db.Uuid, primary_key=True, default=uuid.uuid4())
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(300), nullable=False)
+    about = db.Column(db.String(5000))
 
 
 class UserUploadedImage(db.Model):
@@ -119,6 +120,7 @@ def gallery():
     if not sort: sort = "id"
 
     order = request.args.get("sort-order")
+    if not order: order = "desc"
 
     str_end_date = request.args.get("end-date")
     if not str_end_date: str_end_date = "9999-12-31"
@@ -172,25 +174,30 @@ def login():
     if session.get("user_id"):
         flash("You are already signed in.", "error")
         return redirect(url_for("index"))
+
     if request.method == "POST":
         username, password = handle_json_submission()
         user = User.query.filter_by(username=username).one_or_none()
+
         if not user:
-            flash("Incorrect username!", "error")
+            flash("Incorrect username or password!", "error")
             return redirect(url_for("login"))
+
         pwhash = user.password_hash
+
         if not check_password_hash(pwhash, password):
-            flash("Incorrect password!", "error")
+            flash("Incorrect username or password!", "error")
             return redirect(url_for("login"))
+
         session["user_id"] = user.id
-        flash("Login success!", "success")
+        flash(f"Login success! Logged in as {user.username}.", "success")
         return redirect(url_for("user_profile", id=user.id))
 
     else:
         return render_template("login.html")
 
-@app.route('/signup/', methods=["GET", "POST"])
-def signup():
+@app.route('/register/', methods=["GET", "POST"])
+def register():
     if session.get("user_id"):
         flash("You are already signed in.", "error")
         return redirect(url_for("index"))
@@ -205,31 +212,51 @@ def signup():
             db.session.commit()
         except:
             flash("An error occurred. Please try again", "error")
-            return redirect(url_for("signup"))
-        flash("Successful signup! Please log in.", "success")
+            return redirect(url_for("register"))
+        flash("Successful registration! Please log in.", "success")
         return redirect(url_for("index"))
     else:
-        return render_template("signup.html")
+        return render_template("register.html")
 
 
 @app.route('/logout', methods=["GET", "POST"])
 def logout():
-    if request.method == ["POST"]:
+    if request.method == "POST":
         session.clear()
         flash("Successfully logged out!", "success")
         return redirect(url_for("index"))
+    return render_template("logout.html")
 
-    return "<h1>Visited logout page</h1>"
 
-
-@app.route('/user/<uuid(strict=False):id>')
+@app.route('/user/<uuid(strict=False):id>', methods=["POST", "GET"])
 def user_profile(id):
     user = User.query.filter_by(id=id).one_or_none()
+
     if not user:
         abort(404)
 
-    images = UserUploadedImage.query.filter_by(author_id=id).order_by(desc(UserUploadedImage.created)).limit(4)
-    return render_template("user_profile.html", user=user, images=images)
+    if request.method == "GET":
+        is_authorised = False
+        if session.get("user_id") == id:
+            is_authorised = True
+
+        images = UserUploadedImage.query.filter_by(author_id=id).order_by(desc(UserUploadedImage.created)).limit(4)
+        return render_template("user_profile.html", user=user, images=images, is_authorised=is_authorised)
+    else:
+        if not session.get("user_id") == id:
+            abort(403)
+
+        pending_change = request.form.get("about")
+
+        if len(pending_change) > 5000:
+            flash("About me must be less than 5000 characters in length.", "error")
+            return redirect(url_for("user_profile", id=user.id))
+
+        user.about = pending_change
+        db.session.commit()
+
+        flash("Profile updated successfully.", "success")
+        return redirect(url_for("user_profile", id=user.id))
 
 @app.route('/upload', methods=["GET", 'POST'])
 def upload():
@@ -245,6 +272,16 @@ def upload():
         if not title:
             flash("Please provide a title.", "error")
             return redirect(url_for("upload", title=title, description=description))
+
+        if len(title) > 100:
+            flash("The maximum length of a title is 100 characters.", "error")
+            return redirect(url_for("upload"))
+
+        if len(description) > 5000:
+            flash("The maximum length of the description is 5000 characters", "error")
+            return redirect(url_for("upload", title=title))
+
+        if not description: description = f"This is where a meaningful description would go… if {user.username} had imagination."
 
         if "image" not in request.files:
             flash("Please upload a file.", "error")

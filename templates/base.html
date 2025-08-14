@@ -19,8 +19,12 @@
         <a href="{{ url_for('index') }}">Home</a>
         <a href="{{ url_for('gallery') }}">Gallery</a>
         <a href="{{ url_for('upload') }}">Upload Image</a>
-        <a href="{{ url_for('signup') }}">Sign Up</a>
-        <a href="{{ url_for('login') }}">Sign In</a>
+        <a href="{{ url_for('register') }}">Register</a>
+        {% if session["user_id"] %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
     </nav>
 </div>
 

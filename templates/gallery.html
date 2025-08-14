@@ -62,13 +62,13 @@
     </div>
     <div class="pagination">
         {% if page > 1 %}
-        <a href="{{ url_for('gallery', page=page-1) }}" class="prev">&laquo; Previous</a>
+        <a href="{{ url_for('gallery', page=page-1, images=images, author=author, title=title, sort=sort, order=order, start_date=str_start_date, end_date=str_end_date) }}" class="prev">&laquo; Previous</a>
         {% endif %}
 
         <span>Page {{ page }}</span>
 
         {% if images|length == 12 %}
-        <a href="{{ url_for('gallery', page=page + 1) }}" class="next">Next &raquo;</a>
+        <a href="{{ url_for('gallery', page=page + 1, images=images, author=author, title=title, sort=sort, order=order, start_date=str_start_date, end_date=str_end_date) }}" class="next">Next &raquo;</a>
         {% endif %}
     </div>
 </div>

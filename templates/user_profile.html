@@ -8,6 +8,21 @@
 
 {% block content %}
     <h1>Welcome to {{ user.username|title }}'s profile!</h1>
+    <div id="about-me-container">
+        <h2>About Me</h2>
+        {% if user.about %}
+            <p>{{ user.about }}</p>
+        {% else %}
+            <p>Oh no! {{ user.username }} hasn't added an about me yet :c</p>
+        {% endif %}
+        {% if is_authorised %}
+        <form id="about-form" method="POST" action="{{ url_for('user_profile', id=user.id) }}">
+                <label for="about">Update your about section:</label>
+                <textarea id="about" name="about" placeholder="Tell us about yourself..." maxlength="5000"></textarea>
+                <button type="submit">Update</button>
+        </form>
+        {% endif %}
+    </div>
     <div id="activity">
         <h3>Recent Uploads</h3>
         {% if images %}

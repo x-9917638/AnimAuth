@@ -78,6 +78,67 @@
     border-radius: 8px;
 }
 
+#about-me-container {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    padding: 32px 24px;
+    margin-bottom: 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#about-me-container h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #222;
+}
+#about-me-container p {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 18px;
+}
+#about-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+#about-form label {
+    font-weight: 500;
+    color: #333;
+}
+#about-form textarea {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 10px;
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 80px;
+    background: #fafafa;
+    transition: border 0.2s;
+}
+#about-form textarea:focus {
+    border: 1.5px solid #007bff;
+    outline: none;
+}
+#about-form button {
+    align-self: flex-end;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: background 0.2s;
+}
+#about-form button:hover {
+    background: #0056b3 60%;
+}
+
 @media (max-width: 900px) {
     .item {
         min-width: 80vw;

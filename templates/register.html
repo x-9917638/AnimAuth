@@ -8,12 +8,14 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Sign Up</h1>
+    <h1>Register</h1>
     <div id="top">
         <div id="canvas-toolbar">
             <button id="clear-canvas">Clear Canvas</button>
             <label for="color-picker">Color:</label>
             <input type="color" id="color-picker" value="#000000">
+            <label for="eraser">Eraser</label>
+            <input id="eraser" type="checkbox" name="eraser">
             <button type="button" id="save-frame">Save Current Frame</button>
         </div>
         <canvas id="drawingCanvas" width="100" height="100"></canvas>
@@ -35,6 +37,6 @@
         <input type="text" class="form-box" id="placeholder" disabled placeholder="Use the canvas above to create a GIF password.">
         <input id="submit" type="submit" value="Sign Up!">
     </form>
-    <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/register.js') }}"></script>
 {% endblock %}
 

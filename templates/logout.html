@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block morestylesheets %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/logout.css') }}">
+{% endblock %}
+
+{% block title %}- Logout{% endblock %}
+
+{% block content %}
+    <div id="idk">
+        <h1>Logout?</h1>
+        <form target="{{ url_for("logout") }}" method="POST" id="logout-form">
+            <button type="submit">Confirm</button>
+        </form>
+    </div>
+{% endblock %}
