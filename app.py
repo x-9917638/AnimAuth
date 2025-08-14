@@ -19,7 +19,7 @@ import time, os, base64, filetype, uuid
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
-    app.config["SECRET_KEY"] = 'dev'
+    app.config["SECRET_KEY"] = 'dev' # Replace with your own secret key!
     app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///default.db'
     app.config["UPLOAD_FOLDER"] = app.static_folder + "/media/uploads"
     app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024 # 32 mb (Images can't be that big, rightttt)
@@ -140,11 +140,10 @@ def gallery():
         UserUploadedImage.created <= end_date,
     )
 
-    match order:
-        case "desc":
-            query = query.order_by(desc(func.lower(getattr(UserUploadedImage, sort, None))))
-        case _:
-            query = query.order_by(func.lower(getattr(UserUploadedImage, sort, None)))
+    if order == "desc":
+        query = query.order_by(desc(func.lower(getattr(UserUploadedImage, sort, None))))
+    else:
+        query = query.order_by(func.lower(getattr(UserUploadedImage, sort, None)))
 
     if author:
         query = query.filter(
@@ -221,6 +220,9 @@ def register():
 
 @app.route('/logout', methods=["GET", "POST"])
 def logout():
+    if not session.get("user_id"):
+        flash("You are not logged in...", "error")
+        return redirect(url_for("index"))
     if request.method == "POST":
         session.clear()
         flash("Successfully logged out!", "success")
