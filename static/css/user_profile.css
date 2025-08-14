@@ -21,13 +21,14 @@
     flex: 0 0 auto;
     background: #fff;
     border-radius: 14px;
-    box-shadow: 0 2px 12px rgba(25,118,210,0.08);
+    box-shadow: 0 2px 12px rgba(25, 118, 210, 0.08);
     overflow: hidden;
     transition: box-shadow 10ms, transform 50ms;
     scroll-snap-align: start;
 }
+
 .item:hover {
-    box-shadow: 0 6px 24px rgba(25,118,210,0.16);
+    box-shadow: 0 6px 24px rgba(25, 118, 210, 0.16);
     transform: translateY(-6px) scale(1.03);
 }
 
@@ -40,6 +41,7 @@
     background: #f6f8fa;
     transition: filter 0.2s;
 }
+
 .item:hover .gallery-image {
     filter: brightness(0.95) blur(1px);
 }
@@ -52,6 +54,7 @@
     text-align: left;
     padding-left: 18px;
 }
+
 .image-author {
     font-size: 1.05rem;
     color: #555;
@@ -59,6 +62,7 @@
     text-align: left;
     padding-left: 18px;
 }
+
 .image-description {
     font-size: 1rem;
     color: #333;
@@ -73,6 +77,7 @@
     background: #e3f0fd;
     border-radius: 8px;
 }
+
 .preview-grid::-webkit-scrollbar-thumb {
     background: #b3c6e6;
     border-radius: 8px;
@@ -81,33 +86,38 @@
 #about-me-container {
     background: #fff;
     border-radius: 16px;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
     padding: 32px 24px;
     margin-bottom: 32px;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
 }
+
 #about-me-container h2 {
     font-size: 2rem;
     font-weight: 600;
     margin-bottom: 12px;
     color: #222;
 }
+
 #about-me-container p {
     font-size: 1.1rem;
     color: #444;
     margin-bottom: 18px;
 }
+
 #about-form {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
+
 #about-form label {
     font-weight: 500;
     color: #333;
 }
+
 #about-form textarea {
     border-radius: 8px;
     border: 1px solid #e0e0e0;
@@ -118,10 +128,12 @@
     background: #fafafa;
     transition: border 0.2s;
 }
+
 #about-form textarea:focus {
     border: 1.5px solid #007bff;
     outline: none;
 }
+
 #about-form button {
     align-self: flex-end;
     background: #007bff;
@@ -132,9 +144,10 @@
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     transition: background 0.2s;
 }
+
 #about-form button:hover {
     background: #0056b3 60%;
 }
@@ -144,6 +157,7 @@
         min-width: 80vw;
         max-width: 90vw;
     }
+
     .gallery-image {
         height: 36vw;
         min-height: 120px;

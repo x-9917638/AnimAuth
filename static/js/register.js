@@ -60,7 +60,9 @@ function sendFrames(event) {
         } else if (response.ok) {
             return response.json();
         } else {
-            return response.text().then(text => { throw new Error(text); });
+            return response.text().then(text => {
+                throw new Error(text);
+            });
         }
     })
     .then(data => {
@@ -107,7 +109,7 @@ function draw(event) {
     const snappedY = Math.floor(y / 5) * 5;
 
     if (!erasing) {
-        ctx.fillStyle = currentColor
+        ctx.fillStyle = currentColor;
     }
     else {
         ctx.fillStyle = "#ffffff"

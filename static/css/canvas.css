@@ -9,7 +9,7 @@ canvas {
     border: 2px solid #e0e0e0;
     border-radius: 12px;
     background: #fff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
     display: block;
     width: 500px;
     height: 500px;
@@ -17,8 +17,9 @@ canvas {
     margin-bottom: 12px;
     transition: box-shadow 0.2s;
 }
+
 canvas:focus, canvas:hover {
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
     outline: none;
 }
 
@@ -76,7 +77,7 @@ button, input {
     border: none;
     border-radius: 4px;
     background: #fff;
-    box-shadow: 0 1.5px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.06);
     cursor: pointer;
 }
 
@@ -93,7 +94,7 @@ button, input {
 .card-container {
     background: #fff;
     border-radius: 18px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1.5px 4px rgba(0, 0, 0, 0.04);
     padding: 32px 32px 24px 32px;
     margin: 0 auto 32px auto;
     max-width: 420px;
@@ -104,7 +105,7 @@ button, input {
     border: 2px solid #e0e0e0;
     border-radius: 12px;
     background: #fafbfc;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
     padding: 18px 18px 10px 18px;
     min-width: 270px;
     min-height: 270px;
@@ -117,7 +118,7 @@ button, input {
 
 .img-container img {
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     margin-bottom: 10px;
     background: #fff;
 }
@@ -133,8 +134,9 @@ button, input[type="submit"], input[type="button"] {
     margin: 8px 0;
     cursor: pointer;
     transition: background 0.18s, box-shadow 0.18s;
-    box-shadow: 0 1.5px 4px rgba(25,118,210,0.08);
+    box-shadow: 0 1.5px 4px rgba(25, 118, 210, 0.08);
 }
+
 button:hover, input[type="submit"]:hover, input[type="button"]:hover {
     background: #1565c0;
 }
@@ -146,7 +148,7 @@ input[type="color"] {
     height: 36px;
     margin-left: 8px;
     background: #fff;
-    box-shadow: 0 1.5px 4px rgba(0,0,0,0.06);
+    box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.06);
     cursor: pointer;
 }
 
@@ -161,7 +163,7 @@ form#signup-form {
     align-items: center;
     background: #fff;
     border-radius: 18px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1.5px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1.5px 4px rgba(0, 0, 0, 0.04);
     padding: 32px 32px 24px 32px;
     margin: 32px auto 0 auto;
     max-width: 420px;
@@ -185,6 +187,7 @@ form#signup-form input[type="text"] {
     transition: border 0.18s;
     font-size: 1em;
 }
+
 form#signup-form input[type="text"]:focus {
     border: 1.5px solid #1976d2;
     outline: none;
@@ -250,6 +253,7 @@ h1 {
         align-items: center;
         gap: 30px;
     }
+
     #canvas-toolbar {
         flex-direction: row;
         margin-right: 0;
@@ -257,6 +261,7 @@ h1 {
         min-width: unset;
         gap: 12px;
     }
+
     canvas, #gif-preview {
         width: 90vw;
         height: 90vw;

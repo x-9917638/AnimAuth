@@ -15,6 +15,7 @@ canvas.height = 50;
 let frames = Array();
 
 let drawing = false;
+let erasing = false;
 let currentColor = colorPicker.value;
 
 canvas.addEventListener('mousedown', () => drawing = true);
@@ -22,7 +23,7 @@ canvas.addEventListener('mousedown', draw);
 canvas.addEventListener('mouseup', () => drawing = false);
 canvas.addEventListener('mousemove', draw);
 
-colorPicker.addEventListener('input', (e) => currentColor = e.target.value);
+colorPicker.addEventListener('change', (e) => currentColor = e.target.value);
 clearButton.addEventListener('click', clear)
 saveFrame.addEventListener('click', save)
 animationDelaySlider.addEventListener('input', restartAnimation);
@@ -113,7 +114,6 @@ function draw(event) {
     else {
         ctx.fillStyle = "#ffffff"
     }
-
     ctx.fillRect(snappedX, snappedY, 5, 5); // Fill a 5x5 block
 }
 

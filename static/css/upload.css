@@ -1,7 +1,7 @@
 .upload-container {
     background: #fff;
     border-radius: 18px;
-    box-shadow: 0 2px 16px rgba(25,118,210,0.10);
+    box-shadow: 0 2px 16px rgba(25, 118, 210, 0.10);
     padding: 40px 32px;
     max-width: 520px;
     margin: 48px auto 0 auto;
@@ -9,11 +9,13 @@
     flex-direction: column;
     align-items: center;
 }
+
 .upload-container h1 {
     font-weight: 700;
     color: #1976d2;
     margin-bottom: 18px;
 }
+
 #upload-preview {
     margin-bottom: 24px;
     width: 100%;
@@ -24,20 +26,23 @@
     background: #f6f8fa;
     border-radius: 12px;
     border: 1px solid #e0e0e0;
-    box-shadow: 0 1px 6px rgba(25,118,210,0.04);
+    box-shadow: 0 1px 6px rgba(25, 118, 210, 0.04);
 }
+
 #upload-preview img {
     max-width: 320px;
     max-height: 240px;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(25,118,210,0.08);
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
 }
+
 #upload-image-form {
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
+
 #upload-image-form input[type="file"] {
     padding: 8px;
     border-radius: 8px;
@@ -47,6 +52,7 @@
     color: #1976d2;
     margin-bottom: 8px;
 }
+
 #upload-image-form .form-box {
     border-radius: 8px;
     border: 1px solid #e0e0e0;
@@ -55,10 +61,12 @@
     background: #fafafa;
     transition: border 0.2s;
 }
+
 #upload-image-form .form-box:focus {
     border: 1.5px solid #1976d2;
     outline: none;
 }
+
 #upload-image-form input[type="submit"] {
     background: #1976d2;
     padding: 10px 10px;
@@ -69,17 +77,20 @@
     font-size: 1em;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(25,118,210,0.04);
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.04);
     transition: background 0.2s;
 }
+
 #upload-image-form input[type="submit"]:hover {
     background: #0056b3
 }
+
 @media (max-width: 700px) {
     .upload-container {
         padding: 18px 8px;
         max-width: 98vw;
     }
+
     #upload-preview img {
         max-width: 90vw;
         max-height: 40vw;
