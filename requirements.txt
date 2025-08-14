@@ -1,0 +1,16 @@
+blinker==1.9.0
+click==8.2.1
+filetype==1.2.0
+Flask==3.1.1
+Flask-SQLAlchemy==3.1.1
+Flask-UUID==0.2
+flask_session_captcha==1.5.0
+greenlet==3.2.4
+itsdangerous==2.2.0
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+pillow==11.3.0
+python-dotenv==1.1.1
+SQLAlchemy==2.0.43
+typing_extensions==4.14.1
+Werkzeug==3.1.3
