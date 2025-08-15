@@ -27,9 +27,13 @@
     border-radius: 12px;
     border: 1px solid #e0e0e0;
     box-shadow: 0 1px 6px rgba(25, 118, 210, 0.04);
+    text-align: center;
 }
 
 #upload-preview img {
+    display: block;
+    margin: 0 auto;
+    height: auto;
     max-width: 320px;
     max-height: 240px;
     border-radius: 8px;
@@ -41,6 +45,7 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
+    align-items: center;
 }
 
 #upload-image-form input[type="file"] {
@@ -84,6 +89,7 @@
 #upload-image-form input[type="submit"]:hover {
     background: #0056b3
 }
+
 
 @media (max-width: 700px) {
     .upload-container {

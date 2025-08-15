@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% block title %}- Sign In{% endblock %}
+{% block title %}- Login{% endblock %}
 
 {% block morestylesheets %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/canvas.css') }}">
 {% endblock %}
 
 {% block content %}
-    <h1>Sign In</h1>
+    <h1>Login</h1>
     <div id="top">
         <div id="canvas-toolbar">
             <button id="clear-canvas">Clear Canvas</button>
@@ -31,8 +31,9 @@
         <input type="text" maxlength="100" class="form-box" name="username" id="username">
         <label for="placeholder">Password</label>
         <input type="text" class="form-box" id="placeholder" disabled placeholder="Use the canvas above to input your GIF password.">
-        <input id="submit" type="submit" value="Sign In!">
+        <input id="submit" type="submit" value="Login!">
     </form>
+    <form class=hidden" id="dummy-form" method="POST"></form>
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 {% endblock %}
 

@@ -8,6 +8,7 @@ const animationDelaySlider = document.getElementById("anim-delay")
 const clearSavedFrames = document.getElementById("clear-saved-frames")
 const form = document.getElementById("signup-form")
 const eraser = document.getElementById("eraser")
+const gifSaver = document.getElementById("save-gif")
 
 canvas.width = 50;
 canvas.height = 50;
@@ -28,50 +29,46 @@ clearButton.addEventListener('click', clear)
 saveFrame.addEventListener('click', save)
 animationDelaySlider.addEventListener('input', restartAnimation);
 clearSavedFrames.addEventListener("click", clearFrames)
-form.addEventListener("submit", sendFrames)
+
+form.addEventListener("submit", (event) => {
+    sendFrames(event, "/register/")
+});
+
+gifSaver.addEventListener("click", (event) => {
+    sendFrames(event, "/save")
+});
 
 eraser.addEventListener("change", () => {
     erasing = eraser.checked
 })
 
-function sendFrames(event) {
+function sendFrames(event, url) {
     event.preventDefault();
 
-    const formData = new FormData(form);
+
+    const newForm = document.getElementById("dummy-form");
+    newForm.action = url;
     const jsonData = {};
+
+    const formData = new FormData(form);
 
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
 
     jsonData.frames = frames;
-    jsonData.animSpeed = animationDelaySlider.value
-    console.log(JSON.stringify(jsonData))
-    fetch('/register', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(jsonData)
-    })
-    .then(response => {
-        if (response.redirected) {
-            window.location.href = response.url;
-        } else if (response.ok) {
-            return response.json();
-        } else {
-            return response.text().then(text => {
-                throw new Error(text);
-            });
-        }
-    })
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred: ' + error.message);
-    });
+    jsonData.animSpeed = animationDelaySlider.value;
+
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'json_data';
+    input.value = JSON.stringify(jsonData);
+    newForm.appendChild(input);
+
+
+    document.body.appendChild(newForm);
+    newForm.submit();
+    document.body.removeChild(newForm);
 }
 
 function clearFrames() {

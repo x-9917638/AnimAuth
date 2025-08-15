@@ -27,7 +27,7 @@ If you don't know what a production environment is, then
 you can probably proceed.
 ### Prerequisites:
 ```
-python >= 3.9
+python >= 3.10
 blinker==1.9.0
 click==8.2.1
 filetype==1.2.0

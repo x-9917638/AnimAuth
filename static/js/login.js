@@ -37,42 +37,30 @@ eraser.addEventListener("change", () => {
 function sendFrames(event) {
     event.preventDefault();
 
-    const formData = new FormData(form);
+
+    const newForm = document.getElementById("dummy-form");
     const jsonData = {};
+
+    const formData = new FormData(form);
 
     formData.forEach((value, key) => {
         jsonData[key] = value;
     });
 
     jsonData.frames = frames;
-    jsonData.animSpeed = animationDelaySlider.value
-    console.log(JSON.stringify(jsonData))
-    fetch('/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(jsonData)
-    })
-    .then(response => {
-        if (response.redirected) {
-            window.location.href = response.url;
-        } else if (response.ok) {
-            return response.json();
-        } else {
-            return response.text().then(text => {
-                throw new Error(text);
-            });
-        }
-    })
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred: ' + error.message);
-    });
+    jsonData.animSpeed = animationDelaySlider.value;
+
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'json_data';
+    input.value = JSON.stringify(jsonData);
+    newForm.appendChild(input);
+
+    document.body.appendChild(newForm);
+    newForm.submit();
+    document.body.removeChild(newForm);
 }
+
 
 function clearFrames() {
     if (frames.length > 0) {

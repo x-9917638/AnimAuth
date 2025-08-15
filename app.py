@@ -1,9 +1,5 @@
-from email.policy import default
-from os import sendfile
-
-import sqlalchemy
 from flask import Flask, render_template, request, redirect, flash, url_for, abort, session, \
-    send_from_directory
+    send_from_directory, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func, desc, update
 from flask_uuid import FlaskUUID
@@ -11,10 +7,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from hashlib import md5, sha256
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 from PIL import Image
 from PIL.ExifTags import TAGS
-import time, os, base64, filetype, uuid
-from dotenv import load_dotenv
+import time, os, base64, filetype, uuid, io, json
 
 load_dotenv()
 
@@ -41,6 +37,7 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(300), nullable=False)
     about = db.Column(db.String(5000))
+    data_stored = db.Column(db.Integer, default=0)
 
 
 class UserUploadedImage(db.Model):
@@ -69,38 +66,40 @@ def get_recent_images(app: Flask, num: int):
     return UserUploadedImage.query.order_by(UserUploadedImage.created.desc()).limit(num)
 
 
-def handle_json_submission() -> None | tuple[str, str]:
-    json_data = request.get_json()
+def handle_json_submission() -> None | tuple[str, list[bytes], str]:
+    json_data = json.load(io.StringIO(request.form.get("json_data")))
     if not json_data:
         return abort(415)
 
     if not json_data.get("username"):
         flash("Username is required", "error")
-        return "", ""
+        return "", [], ""
     username: str = json_data.get("username")
 
     if not len(username) < 80 and not len(username) >= 3:
         flash("Username must be between 3 and 80 characters.", "error")
-        return "", ""
+        return "", [], ""
 
     if any([(
             not a.isalpha() and a not in ["_", "."] and not a.isnumeric()
     ) for a in username]):
         flash("Username may only contain letters, numbers and '.', '_'.", "error")
-        return "", ""
+        return "", [], ""
 
     if not json_data.get("frames"):
         flash("Please submit an animation.", "error")
-        return username, ""
+        return username, [], ""
 
     if len(json_data["frames"]) < 3 or len(json_data["frames"]) > 10:
         flash("Your animation must have 3-10 frames.", "error")
-        return username, ""
+        return username, [], ""
 
+    if not json_data.get("animSpeed"):
+        return abort(415) # Should be no way to get here
 
-    image_frames = [str(base64.b64decode(data[22:])) for data in json_data.get("frames")]
+    image_frames = [base64.b64decode(data[22:]) for data in json_data.get("frames")]
     # hashed_password = generate_password_hash("".join(image_frames))
-    return username, "".join(image_frames) + json_data.get("animSpeed")
+    return username, image_frames, json_data.get("animSpeed")
 
 
 def validate_image(stream):
@@ -172,11 +171,16 @@ def gallery():
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if session.get("user_id"):
-        flash("You are already signed in.", "error")
+        flash("You are already logged in.", "error")
         return redirect(url_for("index"))
 
     if request.method == "POST":
-        username, password = handle_json_submission()
+        username, frames, speed = handle_json_submission()
+
+        if not username or not frames or not speed:
+            abort(400)
+
+        password = "".join([str(frame) for frame in frames]) + speed
         user = User.query.filter_by(username=username).one_or_none()
 
         if not user:
@@ -199,11 +203,16 @@ def login():
 @app.route('/register/', methods=["GET", "POST"])
 def register():
     if session.get("user_id"):
-        flash("You are already signed in.", "error")
+        flash("You are already logged in.", "error")
         return redirect(url_for("index"))
 
     if request.method == "POST":
-        username, password = handle_json_submission()
+        username, frames, speed = handle_json_submission()
+
+        if not username or not frames or not speed:
+            abort(400)
+
+        password = "".join([str(frame) for frame in frames]) + speed
         pwhash = generate_password_hash(password)
 
         user = User(username=username, password_hash=pwhash)
@@ -268,6 +277,13 @@ def upload():
         return redirect(url_for("login"))
     user = User.query.filter_by(id=session.get("user_id")).one_or_none()
 
+    if not user:
+        abort(500)
+
+    if user.data_stored >= 200:
+        flash("You have reached the maximum total upload size of 200 mb", "error")
+        return redirect(url_for("index"))
+
     title, description = (request.form.get(field) for field in ("title", "description"))
     if request.method == "GET":
         return render_template('upload.html', title=title, description=description)
@@ -284,7 +300,7 @@ def upload():
             flash("The maximum length of the description is 5000 characters", "error")
             return redirect(url_for("upload", title=title))
 
-        if not description: description = f"This is where a meaningful description would go… if {user.username} had imagination."
+        if not description: description = f"This could be a meaningful description… if {user.username} had spared some effort.."
 
         if "image" not in request.files:
             flash("Please upload a file.", "error")
@@ -298,11 +314,15 @@ def upload():
             flash("Unknown file type.", "error")
             return redirect(url_for("upload", title=title, description=description))
 
+        size = len(file.read()) / 1024 / 1024 # size in mb
+        file.seek(0)
+
         filename = md5(file.read() + bytes(round(time.time()))).hexdigest() + '.' + extension
         file.seek(0)  # Move back to beginning
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 
         file_entry = UserUploadedImage(filename=filename, format=extension, author=user.username, author_id=user.id, title=title, description=description) # Temp placeholder for author_id, will somehow do it when I figure out session :c
+        user.data_stored += size
         db.session.add(file_entry)
         try:
             db.session.commit()
@@ -342,6 +362,26 @@ def download(filename):
                                filename,
                                download_name=image.title + "." + image.format,
                                as_attachment=True)
+
+@app.route("/save", methods=["POST"])
+def save():
+    _, images, speed = handle_json_submission()
+    if any([not item for item in (images, speed)]):
+        return abort(415)
+    frames = [Image.open(io.BytesIO(data)) for data in images]
+    buffer = io.BytesIO()
+    frames[0].save(
+        buffer,
+        format="GIF",
+        append_images=frames[0:], # every frame past 1st
+        save_all=True,
+        duration=(10 * int(speed)),
+        optimize=False,
+        loop=0,
+        comment="Your password for AnimAuth. Keep this safge!"
+    )
+    buffer.seek(0)
+    return send_file(buffer, mimetype="image/gif", download_name="AnimAuthPassword.gif", as_attachment=True)
 
 if __name__ == '__main__':
     app.run()
