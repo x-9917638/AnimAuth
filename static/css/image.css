@@ -1,8 +1,26 @@
+#image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+
 #main-image {
     object-fit: cover;
     max-width: 100%;
-    display: block;
+    display: flex;
+    min-width: 500px;
+    min-height: 500px;
     border: 1px solid #e0e0e0;
+    justify-self: center;
+    padding: 2px;
+}
+
+#image-link {
+    width: fit-content;
+    height: fit-content;
 }
 
 #image-stats {

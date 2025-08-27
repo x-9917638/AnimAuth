@@ -342,8 +342,11 @@ def images(filename):
     metadata = {}
     with Image.open(app.static_folder + f"/media/uploads/{filename}") as img:
         info = img.info
-        exifdata = img._getexif()
-        exifdata = {} if not exifdata else exifdata
+        try:
+            exifdata = img._getexif()
+        except AttributeError:
+            exifdata = {}
+        exifdata = {} if not exifdata else exifdata # will return None, so make dictionary
         for tag_id in TAGS:
             metadata[TAGS[tag_id]] = exifdata.get(tag_id)
 

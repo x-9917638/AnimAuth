@@ -14,9 +14,11 @@
         </a>
         <p>Upload Date: {{ image.created.strftime("%d/%m/%Y, %I:%M %p") }}</p>
     </div>
-    <a href="{{ url_for('download', filename=image.filename) }}">
-        <img id="main-image" src="{{ url_for('static', filename='media/uploads/' + image.filename) }}">
-    </a>
+    <div id="image-container">
+        <a id="image-link" href="{{ url_for('download', filename=image.filename) }}">
+            <img id="main-image" src="{{ url_for('static', filename='media/uploads/' + image.filename) }}">
+        </a>
+    </div>
     <div id="description">
         <h2>Description</h2>
         <p>{% if image.description %}{{ image.description }}{% else %}Not provided :({% endif %}</p>
