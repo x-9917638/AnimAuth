@@ -36,6 +36,7 @@ Flask-SQLAlchemy==3.1.1
 Flask-UUID==0.2
 flask_session_captcha==1.5.0
 greenlet==3.2.4
+gunicorn==23.0.0
 itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.2
@@ -69,9 +70,11 @@ $ ./.venv/scripts/activate.bat
 $ pip install -r requirements.txt
 ```
 #### 4. Create a secret key
+Create the secret key:
 ```shell
 $ python -c "from base64 import b64encode; from os import urandom; print(b64encode(urandom(512)).decode('utf-8'))" > ./.env
 ```
+Edit the .env file and add `SECRET_KEY=` to the start of the file. It should look something like this: `SECRET_KEY=8U3jMpUVpoC2tT [...]`
 #### 5. Run the development server
 ```shell
 $ flask run 
